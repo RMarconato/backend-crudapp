@@ -1,10 +1,10 @@
 export interface IBaseModel {
-  id: string;
+  id: number;
 }
 
 export class BaseModel implements IBaseModel {
-  id: string;
-  constructor(id: string) {
+  id: number;
+  constructor(id: number) {
     this.id = id;
   }
 }

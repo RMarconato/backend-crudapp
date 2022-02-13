@@ -1,10 +1,10 @@
 export interface ICategoryDTO {
-  id: string;
+  id: number;
   name: string;
 }
 
 export class CategoryDTO implements ICategoryDTO {
-  id: string;
+  id: number;
   name: string;
   constructor(category: ICategoryDTO) {
     this.id = category.id;

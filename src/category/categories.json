@@ -1,18 +1,37 @@
 [
   {
-    "id": "5cefa4d3-9d90-48b9-85c4-b30c1aece681",
-    "name": "pet shop"
+    "id": 1,
+    "name": "pet shop",
+    "productDetails": [
+      { "propertyName": "description", "propertyType": "string", "optional": true},
+      { "propertyName": "price", "propertyType": "number", "optional": false },
+      { "propertyName": "expirationTime", "propertyType": "string", "optional": true }
+    ]
   },
   {
-    "id": "e0fcc2cc-ca39-4a42-bdc1-ef8cd4406c2e",
-    "name": "eletrônicos"
+    "id": 2,
+    "name": "eletrônicos",
+    "productDetails": [
+      { "propertyName": "description", "propertyType": "string" , "optional": false},
+      { "propertyName": "price", "propertyType": "number", "optional": false },
+      { "propertyName": "brand", "propertyType": "string", "optional": false }
+    ]
   },
   {
-    "id": "0c9561ec-f03a-4838-be6e-3828bf7a1002",
-    "name": "alimentícios"
+    "id": 3,
+    "name": "alimentícios",
+    "productDetails": [
+      { "propertyName": "price", "propertyType": "string", "optional": false },
+      { "propertyName": "expirationTime", "propertyType": "string", "optional": false }
+    ]
   },
   {
-    "id": "fc508aee-b7d6-452b-bf2b-053251fed6e8",
-    "name": "viagens"
+    "id": 4,
+    "name": "viagens",
+    "productDetails": [
+      { "propertyName": "description", "propertyType": "string", "optional": false },
+      { "propertyName": "included", "propertyType": "string", "optional": false },
+      { "propertyName": "dailyPrice", "propertyType": "number", "optional": false }
+    ]
   }
 ]

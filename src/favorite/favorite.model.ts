@@ -1,6 +1,11 @@
-import { ProductModel } from '../product/product.model';
+import { BaseModel } from 'src/base/base.model';
+
+export interface IFavoriteItemModel {
+  category: string;
+  products: BaseModel[];
+}
 
 export interface IFavorteModel {
   userId: string;
-  products?: ProductModel[];
+  products?: IFavoriteItemModel[];
 }
