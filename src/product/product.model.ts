@@ -1,13 +1,13 @@
 import { IBaseModel, BaseModel } from '../base/base.model';
 
 export interface IProductModel extends IBaseModel {
-  categoryId: string;
+  categoryId: number;
   name: string;
   productDetails: object;
 }
 
 export class ProductModel extends BaseModel implements IProductModel {
-  categoryId: string;
+  categoryId: number;
   name: string;
   productDetails: object;
 

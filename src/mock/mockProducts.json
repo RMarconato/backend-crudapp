@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "categoryId": 1,
+    "name": "ração canina tipo 1",
+    "productDetails": {
+      "description": "ração animal balanceada para cachorros adultos",
+      "price": 130.5,
+      "expirationTime": "12 meses"
+    }
+  },
+  {
+    "id": 2,
+    "categoryId": 1,
+    "name": "Pote Comida",
+    "productDetails": {
+      "price": 40
+    }
+  },
+  {
+    "id": 3,
+    "categoryId": 2,
+    "name": "TV 40''",
+    "productDetails": {
+      "description": "Televisor de 40'' em alta definição",
+      "price": 2300,
+      "brand": "LG"
+    }
+  },
+  {
+    "id": 4,
+    "categoryId": 2,
+    "name": "Batedeira",
+    "productDetails": {
+      "description": "Potência de 2000W",
+      "price": 850,
+      "brand": "Walita"
+    }
+  },
+  {
+    "id": 5,
+    "categoryId": 3,
+    "name": "Cerveja",
+    "productDetails": {
+      "price": 5.6,
+      "expirationTime": "6 meses"
+    }
+  },
+  {
+    "id": 6,
+    "categoryId": 3,
+    "name": "Molho de tomate",
+    "productDetails": {
+      "price": 3.5,
+      "expirationTime": "12 meses"
+    }
+  },
+  {
+    "id": 7,
+    "categoryId": 4,
+    "name": "Pousada 1",
+    "productDetails": {
+      "description": "Acomodações ideais para duas pessoas, podendo optar entre uma cama de casal ou duas de solteiro",
+      "included": "Café da manhã e almoço",
+      "dailyPrice": 140
+    }
+  },
+  {
+    "id": 8,
+    "categoryId": 4,
+    "name": "Hotel 1",
+    "productDetails": {
+      "description": "Acomodações ideais para casal com crianças",
+      "included": "Café da manhã, almoço e jantar",
+      "dailyPrice": 450
+    }
+  }
+]
