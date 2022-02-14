@@ -16,7 +16,6 @@ export class ProductDto implements IProductDto {
     if (product.productDetails) {
       Object.keys(product.productDetails).forEach((p) => {
         this[p] = product.productDetails[p];
-        console.log('this', this);
       });
     }
   }
