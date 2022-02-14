@@ -3,9 +3,8 @@ import {
   Controller,
   Delete,
   Get,
-  InternalServerErrorException,
-  NotFoundException,
   Param,
+  Post,
   Put,
   Query,
   UnprocessableEntityException,
@@ -56,7 +55,7 @@ export class ProductController {
         throw new UnprocessableEntityException('Missing product id');
       }
 
-      if (!isNumberObject(product['id'])) {
+      if (typeof product['id'] != 'number') {
         throw new UnprocessableEntityException(
           'id type is wrong. Expected number',
         );
@@ -119,5 +118,25 @@ export class ProductController {
   @Delete(':id/delete')
   async deleteProductById(@Param() params: { id: number }) {
     await this.productService.deleteProductById(params.id);
+  }
+
+  @Post('/update')
+  async updateProduct(@Body() product: unknown): Promise<ProductDto> {
+    if (await this.checkProductProperties(product, true)) {
+      const category = await this.categoryService.getCategoryById(
+        product['categoryId'],
+      );
+
+      const updatedProduct = await this.productService.updateProduct(
+        ProductModel.toModel(product, category),
+      );
+
+      return new ProductDto({
+        id: updatedProduct.id,
+        categoryId: updatedProduct.categoryId,
+        name: updatedProduct.name,
+        productDetails: updatedProduct.productDetails,
+      });
+    }
   }
 }

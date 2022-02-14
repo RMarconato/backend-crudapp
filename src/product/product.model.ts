@@ -28,7 +28,7 @@ export class ProductModel extends BaseModel implements IProductModel {
     });
 
     return new ProductModel({
-      id: undefined,
+      id: product['id'],
       categoryId: product['categoryId'],
       name: product['name'],
       productDetails: prdDet,
