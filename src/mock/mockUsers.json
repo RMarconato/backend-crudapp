@@ -1,0 +1,5 @@
+[
+  { "userId": 1, "userName": "FirstUser", "password": "firstUserPsw" },
+  { "userId": 2, "userName": "SecondUser", "password": "secondUserPsw" },
+  { "userId": 3, "userName": "ThirdUser", "password": "ThirdUserPsw" }
+]
