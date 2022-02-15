@@ -16,13 +16,16 @@ export class ProductService {
     return this.productRepository.add(product, true);
   }
 
-  async deleteProductById(productId: number): Promise<void> {
-    if (!(await this.productRepository.delete(productId)))
+  async deleteProductById(
+    categoryId: number,
+    productId: number,
+  ): Promise<void> {
+    if (!(await this.productRepository.delete(categoryId, productId)))
       throw new NotFoundException(`Product ${productId} not found.`);
   }
 
   async updateProduct(product: ProductModel): Promise<ProductModel> {
-    if (!(await this.productRepository.delete(product.id)))
+    if (!(await this.productRepository.delete(product.categoryId, product.id)))
       throw new NotFoundException(`Product ${product.id} not found.`);
     return this.productRepository.add(product, false);
   }

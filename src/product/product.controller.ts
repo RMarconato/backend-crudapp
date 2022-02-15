@@ -22,29 +22,6 @@ export class ProductController {
     private readonly categoryService: CategoryService,
   ) {}
 
-  @Get()
-  async getProductsByCategory(
-    @Query('categories')
-    categories?: any,
-  ): Promise<ProductDto[]> {
-    let categ;
-    if (categories)
-      categ = Array.isArray(categories)
-        ? categories.map((c) => new BaseModel(c))
-        : (categ = [new BaseModel(categories as number)]);
-
-    const products = await this.productService.getProductsByCategories(categ);
-    return products.map(
-      (prod) =>
-        new ProductDto({
-          id: prod.id,
-          categoryId: prod.categoryId,
-          name: prod.name,
-          productDetails: prod.productDetails,
-        }),
-    );
-  }
-
   private async checkProductProperties(
     product: unknown,
     checkId?: boolean,
@@ -96,46 +73,85 @@ export class ProductController {
     return true;
   }
 
+  @Get()
+  async getProductsByCategory(
+    @Query('categories')
+    categories?: number,
+  ): Promise<ProductDto[]> {
+    let categ;
+    if (categories)
+      categ = Array.isArray(categories)
+        ? categories.map((c) => new BaseModel(c))
+        : (categ = [new BaseModel(categories as number)]);
+
+    const products = await this.productService.getProductsByCategories(categ);
+    return products.map(
+      (prod) =>
+        new ProductDto({
+          id: prod.id,
+          categoryId: prod.categoryId,
+          name: prod.name,
+          productDetails: prod.productDetails,
+        }),
+    );
+  }
+
   @Put()
   async addProduct(@Body() product: unknown): Promise<ProductDto> {
-    if (await this.checkProductProperties(product)) {
-      const category = await this.categoryService.getCategoryById(
-        product['categoryId'],
-      );
-      const newProduct = await this.productService.addProduct(
-        ProductModel.toModel(product, category),
-      );
-      return new ProductDto({
-        id: newProduct.id,
-        categoryId: newProduct.categoryId,
-        name: newProduct.name,
-        productDetails: newProduct.productDetails,
-      });
-    }
+    await this.checkProductProperties(product);
+
+    const category = await this.categoryService.getCategoryById(
+      product['categoryId'],
+    );
+    const newProduct = await this.productService.addProduct(
+      ProductModel.toModel(product, category),
+    );
+    return new ProductDto({
+      id: newProduct.id,
+      categoryId: newProduct.categoryId,
+      name: newProduct.name,
+      productDetails: newProduct.productDetails,
+    });
   }
 
-  @Delete(':id/delete')
-  async deleteProductById(@Param() params: { id: number }) {
-    await this.productService.deleteProductById(params.id);
+  @Delete(':categoryId/:productId/delete')
+  async deleteProductById(
+    @Param() params: { categoryId: number; productId: number },
+  ) {
+    await this.productService.deleteProductById(
+      Number(params.categoryId),
+      Number(params.productId),
+    );
   }
 
-  @Post('/update')
-  async updateProduct(@Body() product: unknown): Promise<ProductDto> {
-    if (await this.checkProductProperties(product, true)) {
-      const category = await this.categoryService.getCategoryById(
-        product['categoryId'],
-      );
+  @Post(':categoryId/:productId/update')
+  async updateProduct(
+    @Param() params: { categoryId: number; productId: number },
+    @Body() product: object,
+  ): Promise<ProductDto> {
+    const updatingProduct = {
+      id: Number(params.productId),
+      categoryId: Number(params.categoryId),
+      ...product,
+    };
 
-      const updatedProduct = await this.productService.updateProduct(
-        ProductModel.toModel(product, category),
-      );
+    console.log('updatingProduct', updatingProduct);
 
-      return new ProductDto({
-        id: updatedProduct.id,
-        categoryId: updatedProduct.categoryId,
-        name: updatedProduct.name,
-        productDetails: updatedProduct.productDetails,
-      });
-    }
+    await this.checkProductProperties(updatingProduct, true);
+
+    const category = await this.categoryService.getCategoryById(
+      updatingProduct.categoryId,
+    );
+
+    const updatedProduct = await this.productService.updateProduct(
+      ProductModel.toModel(updatingProduct, category),
+    );
+
+    return new ProductDto({
+      id: updatedProduct.id,
+      categoryId: updatedProduct.categoryId,
+      name: updatedProduct.name,
+      productDetails: updatedProduct.productDetails,
+    });
   }
 }

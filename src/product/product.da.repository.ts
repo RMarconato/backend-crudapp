@@ -10,18 +10,30 @@ export default class ProductDaRepository {
     ProductDaRepository.products = [...mockInitialProducts];
   }
 
-  private getNextId(): number {
-    if (ProductDaRepository.products.length == 0) return 1;
-    const maxId = ProductDaRepository.products.reduce(
-      (max, current) => (current.id > max ? current.id : max),
-      ProductDaRepository.products[0].id,
+  private filterByCategories(categories: BaseModel[]): ProductModel[] {
+    const selectedProducts = ProductDaRepository.products.filter((o) =>
+      categories.find((f) => f.id == o.categoryId),
     );
+    return selectedProducts.map((prod) => new ProductModel(prod));
+  }
+
+  private getNextId(categoryId: number): number {
+    const categoryProducts = this.filterByCategories([
+      new BaseModel(categoryId),
+    ]);
+
+    if (categoryProducts.length == 0) return 1;
+    const maxId = categoryProducts.reduce(
+      (max, current) => (current.id > max ? current.id : max),
+      categoryProducts[0].id,
+    );
+
     return maxId + 1;
   }
 
-  private findIndexById(productId: number): number {
+  private findIndexById(categoryId: number, productId: number): number {
     return ProductDaRepository.products.findIndex(
-      (prod) => prod.id == productId,
+      (prod) => prod.categoryId == categoryId && prod.id == productId,
     );
   }
 
@@ -29,9 +41,7 @@ export default class ProductDaRepository {
     categories: BaseModel[],
   ): Promise<ProductModel[]> {
     const selectedProducts = categories
-      ? ProductDaRepository.products.filter((o) =>
-          categories.find((f) => f.id == o.categoryId),
-        )
+      ? this.filterByCategories(categories)
       : ProductDaRepository.products;
     return selectedProducts.map((prod) => new ProductModel(prod));
   }
@@ -40,13 +50,13 @@ export default class ProductDaRepository {
     product: ProductModel,
     newProduct?: boolean,
   ): Promise<ProductModel> {
-    if (newProduct) product.id = this.getNextId();
+    if (newProduct) product.id = await this.getNextId(product.categoryId);
     ProductDaRepository.products.push(product);
     return product;
   }
 
-  async delete(productId: number): Promise<boolean> {
-    const productIndex = this.findIndexById(productId);
+  async delete(categoryId: number, productId: number): Promise<boolean> {
+    const productIndex = this.findIndexById(categoryId, productId);
     if (productIndex < 0) return false;
     ProductDaRepository.products.splice(productIndex, 1);
     return true;
