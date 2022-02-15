@@ -135,8 +135,6 @@ export class ProductController {
       ...product,
     };
 
-    console.log('updatingProduct', updatingProduct);
-
     await this.checkProductProperties(updatingProduct, true);
 
     const category = await this.categoryService.getCategoryById(
