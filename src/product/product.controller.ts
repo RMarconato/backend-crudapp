@@ -7,8 +7,11 @@ import {
   Post,
   Put,
   Query,
+  Request,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { FavoriteDto } from 'src/favorites/favorite.dto';
+import { FavoritesService } from 'src/favorites/favorites.service';
 import { BaseModel } from '../base/base.model';
 import { CategoryService } from '../category/category.service';
 import { ProductDto } from './product.dto';
@@ -20,6 +23,7 @@ export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly categoryService: CategoryService,
+    private readonly favoritesService: FavoritesService,
   ) {}
 
   private async checkProductProperties(
@@ -151,5 +155,33 @@ export class ProductController {
       name: updatedProduct.name,
       productDetails: updatedProduct.productDetails,
     });
+  }
+
+  @Put('/favorites')
+  async addFavorite(
+    @Request() req,
+    @Body() favorite: FavoriteDto,
+  ): Promise<void> {
+    const { user } = req;
+
+    await this.favoritesService.addFavorite(
+      user.userId,
+      favorite.categoryId,
+      favorite.productId,
+    );
+  }
+
+  @Delete('/favorites/:categoryId/:productId/delete')
+  async deleteFavorite(
+    @Request() req,
+    @Param() params: { categoryId: number; productId: number },
+  ): Promise<void> {
+    const { user } = req;
+
+    await this.favoritesService.deleteFavorite(
+      user.userId,
+      params.categoryId,
+      params.productId,
+    );
   }
 }

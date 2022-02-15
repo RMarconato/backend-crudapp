@@ -5,7 +5,7 @@ import { ProductModel } from './product.model';
 
 @Injectable()
 export default class ProductDaRepository {
-  private static products;
+  private static products: ProductModel[];
   constructor() {
     ProductDaRepository.products = [...mockInitialProducts];
   }
