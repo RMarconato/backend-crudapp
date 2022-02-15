@@ -4,7 +4,6 @@ import { FavoriteModule } from './favorite/favorite.module';
 import { CategoryModule } from './category/category.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -14,7 +13,7 @@ import { AppController } from './app.controller';
     AuthModule,
     UsersModule,
   ],
-  controllers: [AppController],
+  // controllers: [AppController],
   // providers: [AppService],
 })
 export class AppModule {}
