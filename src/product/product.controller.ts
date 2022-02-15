@@ -9,7 +9,6 @@ import {
   Query,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { isNumberObject } from 'util/types';
 import { BaseModel } from '../base/base.model';
 import { CategoryService } from '../category/category.service';
 import { ProductDto } from './product.dto';
