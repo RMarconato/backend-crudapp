@@ -8,16 +8,13 @@ import {
   Put,
   Query,
   UnprocessableEntityException,
-  UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BaseModel } from '../base/base.model';
 import { CategoryService } from '../category/category.service';
 import { ProductDto } from './product.dto';
 import { ProductModel } from './product.model';
 import { ProductService } from './product.service';
 
-@UseGuards(JwtAuthGuard)
 @Controller('product')
 export class ProductController {
   constructor(
