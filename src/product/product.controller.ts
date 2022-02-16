@@ -7,8 +7,11 @@ import {
   Post,
   Put,
   Query,
+  Request,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { FavoriteDto } from 'src/favorites/favorite.dto';
+import { FavoritesService } from 'src/favorites/favorites.service';
 import { BaseModel } from '../base/base.model';
 import { CategoryService } from '../category/category.service';
 import { ProductDto } from './product.dto';
@@ -20,30 +23,8 @@ export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly categoryService: CategoryService,
+    private readonly favoritesService: FavoritesService,
   ) {}
-
-  @Get()
-  async getProductsByCategory(
-    @Query('categories')
-    categories?: any,
-  ): Promise<ProductDto[]> {
-    let categ;
-    if (categories)
-      categ = Array.isArray(categories)
-        ? categories.map((c) => new BaseModel(c))
-        : (categ = [new BaseModel(categories as number)]);
-
-    const products = await this.productService.getProductsByCategories(categ);
-    return products.map(
-      (prod) =>
-        new ProductDto({
-          id: prod.id,
-          categoryId: prod.categoryId,
-          name: prod.name,
-          productDetails: prod.productDetails,
-        }),
-    );
-  }
 
   private async checkProductProperties(
     product: unknown,
@@ -96,46 +77,123 @@ export class ProductController {
     return true;
   }
 
+  @Get()
+  async getProductsByCategory(
+    @Query('categories')
+    categories?: number,
+  ): Promise<ProductDto[]> {
+    let categ;
+    if (categories)
+      categ = Array.isArray(categories)
+        ? categories.map((c) => new BaseModel(c))
+        : (categ = [new BaseModel(categories as number)]);
+
+    const products = await this.productService.getProductsByCategories(categ);
+    return products.map(
+      (prod) =>
+        new ProductDto({
+          id: prod.id,
+          categoryId: prod.categoryId,
+          name: prod.name,
+          productDetails: prod.productDetails,
+        }),
+    );
+  }
+
   @Put()
   async addProduct(@Body() product: unknown): Promise<ProductDto> {
-    if (await this.checkProductProperties(product)) {
-      const category = await this.categoryService.getCategoryById(
-        product['categoryId'],
-      );
-      const newProduct = await this.productService.addProduct(
-        ProductModel.toModel(product, category),
-      );
-      return new ProductDto({
-        id: newProduct.id,
-        categoryId: newProduct.categoryId,
-        name: newProduct.name,
-        productDetails: newProduct.productDetails,
-      });
-    }
+    await this.checkProductProperties(product);
+
+    const category = await this.categoryService.getCategoryById(
+      product['categoryId'],
+    );
+    const newProduct = await this.productService.addProduct(
+      ProductModel.toModel(product, category),
+    );
+    return new ProductDto({
+      id: newProduct.id,
+      categoryId: newProduct.categoryId,
+      name: newProduct.name,
+      productDetails: newProduct.productDetails,
+    });
   }
 
-  @Delete(':id/delete')
-  async deleteProductById(@Param() params: { id: number }) {
-    await this.productService.deleteProductById(params.id);
+  @Delete(':categoryId/:productId/delete')
+  async deleteProductById(
+    @Param() params: { categoryId: number; productId: number },
+  ) {
+    await this.productService.deleteProductById(
+      Number(params.categoryId),
+      Number(params.productId),
+    );
   }
 
-  @Post('/update')
-  async updateProduct(@Body() product: unknown): Promise<ProductDto> {
-    if (await this.checkProductProperties(product, true)) {
-      const category = await this.categoryService.getCategoryById(
-        product['categoryId'],
-      );
+  @Post(':categoryId/:productId/update')
+  async updateProduct(
+    @Param() params: { categoryId: number; productId: number },
+    @Body() product: object,
+  ): Promise<ProductDto> {
+    const updatingProduct = {
+      id: Number(params.productId),
+      categoryId: Number(params.categoryId),
+      ...product,
+    };
 
-      const updatedProduct = await this.productService.updateProduct(
-        ProductModel.toModel(product, category),
-      );
+    await this.checkProductProperties(updatingProduct, true);
 
-      return new ProductDto({
-        id: updatedProduct.id,
-        categoryId: updatedProduct.categoryId,
-        name: updatedProduct.name,
-        productDetails: updatedProduct.productDetails,
-      });
-    }
+    const category = await this.categoryService.getCategoryById(
+      updatingProduct.categoryId,
+    );
+
+    const updatedProduct = await this.productService.updateProduct(
+      ProductModel.toModel(updatingProduct, category),
+    );
+
+    return new ProductDto({
+      id: updatedProduct.id,
+      categoryId: updatedProduct.categoryId,
+      name: updatedProduct.name,
+      productDetails: updatedProduct.productDetails,
+    });
+  }
+
+  @Get('/favorites')
+  async getFavorites(@Request() req): Promise<ProductDto[]> {
+    const { user } = req;
+    const userFavorites = await this.favoritesService.getFavorites(user.userId);
+
+    if (!userFavorites) return [];
+
+    return await this.productService.getProductsByCategoriesAndIds(
+      userFavorites,
+    );
+  }
+
+  @Put('/favorites')
+  async addFavorite(
+    @Request() req,
+    @Body() favorite: FavoriteDto,
+  ): Promise<void> {
+    const { user } = req;
+
+    await this.favoritesService.addFavorite(
+      user.userId,
+      favorite.categoryId,
+      favorite.productId,
+    );
+  }
+
+  @Delete('/favorites/:categoryId/:productId/delete')
+  async deleteFavorite(
+    @Request() req,
+    @Param() params: { categoryId: number; productId: number },
+  ): Promise<void> {
+    const { user } = req;
+
+    await this.favoritesService.deleteFavorite(
+      user.userId,
+      params.categoryId,
+      params.productId,
+    );
   }
 }

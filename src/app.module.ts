@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ProductModule } from './product/product.module';
-import { FavoriteModule } from './favorite/favorite.module';
+import { FavoritesModule } from './favorites/favorites.module';
 import { CategoryModule } from './category/category.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -10,7 +10,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 @Module({
   imports: [
     ProductModule,
-    FavoriteModule,
+    FavoritesModule,
     CategoryModule,
     AuthModule,
     UsersModule,

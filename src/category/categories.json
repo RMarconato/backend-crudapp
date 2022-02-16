@@ -21,7 +21,7 @@
     "id": 3,
     "name": "alimentícios",
     "productDetails": [
-      { "propertyName": "price", "propertyType": "string", "optional": false },
+      { "propertyName": "price", "propertyType": "number", "optional": false },
       { "propertyName": "expirationTime", "propertyType": "string", "optional": false }
     ]
   },
