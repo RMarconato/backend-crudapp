@@ -1,10 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { CategoryDto } from './category.dto';
-import { CategoryService } from './category.service';
+import { CategoryService, CATEGORY_SERVICE_NAME } from './category.service';
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    @Inject(CATEGORY_SERVICE_NAME) private categoryService: CategoryService,
+  ) {}
 
   @Get()
   async getAllCategories(): Promise<CategoryDto[]> {

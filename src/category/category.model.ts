@@ -1,6 +1,6 @@
 import { IBaseModel, BaseModel } from '../base/base.model';
 
-interface ProductDetail {
+export interface IProductDetail {
   propertyName: string;
   propertyType: string;
   optional: boolean;
@@ -8,12 +8,12 @@ interface ProductDetail {
 
 export interface ICategoryModel extends IBaseModel {
   name: string;
-  productDetails: ProductDetail[];
+  productDetails: IProductDetail[];
 }
 
 export class CategoryModel extends BaseModel implements ICategoryModel {
   name: string;
-  productDetails: ProductDetail[];
+  productDetails: IProductDetail[];
   constructor(category: ICategoryModel) {
     super(category.id);
     this.name = category.name;
