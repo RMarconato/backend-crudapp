@@ -79,14 +79,16 @@ export class ProductController {
 
   @Get()
   async getProductsByCategory(
-    @Query('categories')
-    categories?: number,
+    @Query()
+    query: {
+      categories?: number[];
+    },
   ): Promise<ProductDto[]> {
     let categ;
-    if (categories)
-      categ = Array.isArray(categories)
-        ? categories.map((c) => new BaseModel(c))
-        : (categ = [new BaseModel(categories as number)]);
+    if (query.categories)
+      categ = Array.isArray(query.categories)
+        ? query.categories.map((c) => new BaseModel(c))
+        : (categ = [new BaseModel(query.categories as number)]);
 
     const products = await this.productService.getProductsByCategories(categ);
     return products.map(
@@ -100,7 +102,7 @@ export class ProductController {
     );
   }
 
-  @Put()
+  @Post()
   async addProduct(@Body() product: unknown): Promise<ProductDto> {
     await this.checkProductProperties(product);
 
@@ -128,7 +130,7 @@ export class ProductController {
     );
   }
 
-  @Post(':categoryId/:productId/update')
+  @Put(':categoryId/:productId/update')
   async updateProduct(
     @Param() params: { categoryId: number; productId: number },
     @Body() product: object,
@@ -169,7 +171,7 @@ export class ProductController {
     );
   }
 
-  @Put('/favorites')
+  @Post('/favorites')
   async addFavorite(
     @Request() req,
     @Body() favorite: FavoriteDto,
