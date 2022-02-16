@@ -73,4 +73,8 @@ export default class FavoritesDaRepository {
     category.products.splice(productIdx, 1);
     return userFavorites;
   }
+
+  async getUserFavorites(userId: number): Promise<FavoriteItemModel[]> {
+    return this.findFavoritesByUser(userId)?.favorites;
+  }
 }

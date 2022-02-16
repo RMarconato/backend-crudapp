@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BaseModel } from 'src/base/base.model';
+import { BaseModel } from '../base/base.model';
+import { FavoriteItemModel } from '../favorites/favorites.model';
 import mockInitialProducts from '../mock/mockProducts.json';
 import { ProductModel } from './product.model';
 
@@ -13,6 +14,17 @@ export default class ProductDaRepository {
   private filterByCategories(categories: BaseModel[]): ProductModel[] {
     const selectedProducts = ProductDaRepository.products.filter((o) =>
       categories.find((f) => f.id == o.categoryId),
+    );
+    return selectedProducts.map((prod) => new ProductModel(prod));
+  }
+
+  private filterByCategoriesAndIds(
+    filter: FavoriteItemModel[],
+  ): ProductModel[] {
+    const selectedProducts = ProductDaRepository.products.filter((o) =>
+      filter.find(
+        (f) => f.categoryId == o.categoryId && f.products.includes(o.id),
+      ),
     );
     return selectedProducts.map((prod) => new ProductModel(prod));
   }
@@ -44,6 +56,14 @@ export default class ProductDaRepository {
       ? this.filterByCategories(categories)
       : ProductDaRepository.products;
     return selectedProducts.map((prod) => new ProductModel(prod));
+  }
+
+  async getProductsByCategoriesAndIds(
+    filter: FavoriteItemModel[],
+  ): Promise<ProductModel[]> {
+    return this.filterByCategoriesAndIds(filter).map(
+      (prod) => new ProductModel(prod),
+    );
   }
 
   async add(

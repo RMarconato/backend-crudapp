@@ -157,6 +157,18 @@ export class ProductController {
     });
   }
 
+  @Get('/favorites')
+  async getFavorites(@Request() req): Promise<ProductDto[]> {
+    const { user } = req;
+    const userFavorites = await this.favoritesService.getFavorites(user.userId);
+
+    if (!userFavorites) return [];
+
+    return await this.productService.getProductsByCategoriesAndIds(
+      userFavorites,
+    );
+  }
+
   @Put('/favorites')
   async addFavorite(
     @Request() req,
