@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import IFavoriteRepository from './favorites.interface.repository';
 import { FavoriteItemModel, FavoriteModel } from './favorites.model';
 
 @Injectable()
-export default class FavoritesDaRepository {
+export default class FavoritesDaRepository implements IFavoriteRepository {
   private static favorites: FavoriteModel[];
   constructor() {
     FavoritesDaRepository.favorites = [];
@@ -60,14 +61,15 @@ export default class FavoritesDaRepository {
     userId: number,
     categoryId: number,
     productId: number,
-  ): Promise<FavoriteModel | void> {
+  ): Promise<FavoriteModel> {
     const userFavorites = this.findFavoritesByUser(userId);
 
     const category = userFavorites?.favorites.find(
       (c) => c.categoryId == categoryId,
     );
 
-    const productIdx = category?.products.findIndex((p) => p == productId);
+    if (!category) return;
+    const productIdx = category.products.findIndex((p) => p == productId);
 
     if (productIdx < 0) return;
     category.products.splice(productIdx, 1);

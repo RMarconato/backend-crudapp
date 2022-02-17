@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -10,20 +11,26 @@ import {
   Request,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { FavoriteDto } from 'src/favorites/favorite.dto';
-import { FavoritesService } from 'src/favorites/favorites.service';
+import { FavoriteDto } from '../favorites/favorites.dto';
+import IFavoritesService, {
+  FAVORITES_SERVICE_INTERFACE_NAME,
+} from '../favorites/favorites.interface.service';
 import { BaseModel } from '../base/base.model';
-import { CategoryService } from '../category/category.service';
 import { ProductDto } from './product.dto';
 import { ProductModel } from './product.model';
 import { ProductService } from './product.service';
+import ICategoryService, {
+  CATEGORY_SERVICE_INTERFACE_NAME,
+} from '../category/category.interface.service';
 
 @Controller('product')
 export class ProductController {
   constructor(
     private readonly productService: ProductService,
-    private readonly categoryService: CategoryService,
-    private readonly favoritesService: FavoritesService,
+    @Inject(CATEGORY_SERVICE_INTERFACE_NAME)
+    private categoryService: ICategoryService,
+    @Inject(FAVORITES_SERVICE_INTERFACE_NAME)
+    private favoritesService: IFavoritesService,
   ) {}
 
   private async checkProductProperties(

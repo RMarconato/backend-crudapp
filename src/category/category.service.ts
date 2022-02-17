@@ -16,5 +16,3 @@ export class CategoryService {
     return new CategoryModel(category);
   }
 }
-
-export const CATEGORY_SERVICE_NAME = CategoryService;

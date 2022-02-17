@@ -1,8 +1,4 @@
-import {
-  IProductDetail,
-  ICategoryModel,
-  CategoryModel,
-} from './category.model';
+import { CategoryModel } from './category.model';
 
 describe('CategoryModel', () => {
   it('should create an entity from the model', () => {

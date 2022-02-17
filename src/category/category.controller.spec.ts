@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoryController } from './category.controller';
-import { CATEGORY_SERVICE_NAME } from './category.service';
 import categories from './categories.json';
+import { CATEGORY_SERVICE_INTERFACE_NAME } from './category.interface.service';
 
 let controller: CategoryController;
 const mockCategoryService = {
@@ -14,7 +14,7 @@ describe('CategoryController', () => {
       controllers: [CategoryController],
       providers: [
         {
-          provide: CATEGORY_SERVICE_NAME,
+          provide: CATEGORY_SERVICE_INTERFACE_NAME,
           useValue: mockCategoryService,
         },
       ],
