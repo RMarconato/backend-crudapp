@@ -1,57 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import FavoritesDaRepository from './favorites.da.repository';
-import { FavoriteItemModel, FavoriteModel } from './favorites.model';
-
-const mockFavorites = [
-  {
-    userId: 1,
-    favorites: [
-      {
-        categoryId: 1,
-        products: [1],
-      },
-    ],
-  },
-  {
-    userId: 2,
-    favorites: [
-      {
-        categoryId: 1,
-        products: [1, 2],
-      },
-    ],
-  },
-  {
-    userId: 3,
-    favorites: [
-      {
-        categoryId: 1,
-        products: [1],
-      },
-      {
-        categoryId: 2,
-        products: [1, 2],
-      },
-      {
-        categoryId: 3,
-        products: [2],
-      },
-    ],
-  },
-  {
-    userId: 4,
-    favorites: [
-      {
-        categoryId: 3,
-        products: [1, 2],
-      },
-      {
-        categoryId: 4,
-        products: [2],
-      },
-    ],
-  },
-];
 
 describe('FavoriteRepository', () => {
   let repository: FavoritesDaRepository;
