@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import IFavoriteRepository, {
-  FAVORITE_REPOSITORY_INTERFACE_NAME,
+  FAVORITES_REPOSITORY_INTERFACE_NAME,
 } from './favorites.interface.repository';
 import IFavoritesService from './favorites.interface.service';
 import { FavoriteItemModel, FavoriteModel } from './favorites.model';
@@ -8,7 +8,7 @@ import { FavoriteItemModel, FavoriteModel } from './favorites.model';
 @Injectable()
 export class FavoritesService implements IFavoritesService {
   constructor(
-    @Inject(FAVORITE_REPOSITORY_INTERFACE_NAME)
+    @Inject(FAVORITES_REPOSITORY_INTERFACE_NAME)
     private favoritesRepository: IFavoriteRepository,
   ) {}
 

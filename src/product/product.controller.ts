@@ -18,15 +18,18 @@ import IFavoritesService, {
 import { BaseModel } from '../base/base.model';
 import { ProductDto } from './product.dto';
 import { ProductModel } from './product.model';
-import { ProductService } from './product.service';
 import ICategoryService, {
   CATEGORY_SERVICE_INTERFACE_NAME,
 } from '../category/category.interface.service';
+import IProductService, {
+  PRODUCT_SERVICE_INTERFACE_NAME,
+} from './product.interface.service';
 
 @Controller('product')
 export class ProductController {
   constructor(
-    private readonly productService: ProductService,
+    @Inject(PRODUCT_SERVICE_INTERFACE_NAME)
+    private productService: IProductService,
     @Inject(CATEGORY_SERVICE_INTERFACE_NAME)
     private categoryService: ICategoryService,
     @Inject(FAVORITES_SERVICE_INTERFACE_NAME)

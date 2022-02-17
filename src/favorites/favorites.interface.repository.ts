@@ -14,6 +14,6 @@ interface IFavoriteRepository {
   getUserFavorites(userId: number): Promise<FavoriteItemModel[]>;
 }
 
-export const FAVORITE_REPOSITORY_INTERFACE_NAME = 'IFavoriteRepository';
+export const FAVORITES_REPOSITORY_INTERFACE_NAME = 'IFavoriteRepository';
 
 export default IFavoriteRepository;

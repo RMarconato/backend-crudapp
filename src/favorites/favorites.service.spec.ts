@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import IFavoriteRepository, {
-  FAVORITE_REPOSITORY_INTERFACE_NAME,
+  FAVORITES_REPOSITORY_INTERFACE_NAME,
 } from './favorites.interface.repository';
 import { FavoriteItemModel, FavoriteModel } from './favorites.model';
 import { FavoritesService } from './favorites.service';
@@ -19,7 +19,7 @@ describe('FavoriteService', () => {
       providers: [
         FavoritesService,
         {
-          provide: FAVORITE_REPOSITORY_INTERFACE_NAME,
+          provide: FAVORITES_REPOSITORY_INTERFACE_NAME,
           useValue: mockFavoritesRepository,
         },
       ],
