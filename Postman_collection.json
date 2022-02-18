@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "e451cf1b-15f0-48f2-b80a-d2c9a4ca0230",
+		"name": "BackendCRUDApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User-LogIn",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"FirstUser\",\r\n    \"password\": \"firstUserPsw\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category-GetAll",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/category",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products-Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/product?categories=1&categories=3",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product"
+					],
+					"query": [
+						{
+							"key": "categories",
+							"value": "1"
+						},
+						{
+							"key": "categories",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products-Add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ração canina tipo 2\",\r\n    \"categoryId\": 1,\r\n    \"description\": \"ração animal balanceada para cachorros adultos\",\r\n    \"price\": 100,\r\n    \"expirationTime\": \"18 meses\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/product",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products-Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/product/1/2/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product",
+						"1",
+						"2",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products-Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ração canina tipo 3\",\r\n    \"description\": \"ração animal para cachorros adultos\",\r\n    \"price\": 80,\r\n    \"expirationTime\": \"24 meses\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/product/1/2/update",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product",
+						"1",
+						"2",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Favorites-Add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoryId\": 4,\r\n    \"productId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/product/favorites",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product",
+						"favorites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Favorites-Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/product/favorites/1/1/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product",
+						"favorites",
+						"1",
+						"1",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Favorites-Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/product/favorites",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"product",
+						"favorites"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZpcnN0VXNlciIsInN1YiI6MSwiaWF0IjoxNjQ1MjEwOTgwLCJleHAiOjE2NDUyOTczODB9.MAs6ZX-V56FxMPDdUJ4U8D5lL8LynVueqQUdI3Rl-hA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
