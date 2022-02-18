@@ -4,6 +4,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: [
     '<rootDir>/src/decorators/',
+    '<rootDir>/src/auth/',
     '.module.ts',
     '.dto.ts',
     '.interface.*.ts',

@@ -41,10 +41,6 @@ export class ProductController {
     checkId?: boolean,
   ): Promise<boolean> {
     if (checkId) {
-      if (!product.hasOwnProperty('id')) {
-        throw new UnprocessableEntityException('Missing product id');
-      }
-
       if (typeof product['id'] != 'number') {
         throw new UnprocessableEntityException(
           'id type is wrong. Expected number',
@@ -176,8 +172,18 @@ export class ProductController {
 
     if (!userFavorites) return [];
 
-    return await this.productService.getProductsByCategoriesAndIds(
+    const products = await this.productService.getProductsByCategoriesAndIds(
       userFavorites,
+    );
+
+    return products.map(
+      (prod) =>
+        new ProductDto({
+          id: prod.id,
+          categoryId: prod.categoryId,
+          name: prod.name,
+          productDetails: prod.productDetails,
+        }),
     );
   }
 
