@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -10,20 +11,29 @@ import {
   Request,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { FavoriteDto } from 'src/favorites/favorite.dto';
-import { FavoritesService } from 'src/favorites/favorites.service';
+import { FavoriteDto } from '../favorites/favorites.dto';
+import IFavoritesService, {
+  FAVORITES_SERVICE_INTERFACE_NAME,
+} from '../favorites/favorites.interface.service';
 import { BaseModel } from '../base/base.model';
-import { CategoryService } from '../category/category.service';
 import { ProductDto } from './product.dto';
 import { ProductModel } from './product.model';
-import { ProductService } from './product.service';
+import ICategoryService, {
+  CATEGORY_SERVICE_INTERFACE_NAME,
+} from '../category/category.interface.service';
+import IProductService, {
+  PRODUCT_SERVICE_INTERFACE_NAME,
+} from './product.interface.service';
 
 @Controller('product')
 export class ProductController {
   constructor(
-    private readonly productService: ProductService,
-    private readonly categoryService: CategoryService,
-    private readonly favoritesService: FavoritesService,
+    @Inject(PRODUCT_SERVICE_INTERFACE_NAME)
+    private productService: IProductService,
+    @Inject(CATEGORY_SERVICE_INTERFACE_NAME)
+    private categoryService: ICategoryService,
+    @Inject(FAVORITES_SERVICE_INTERFACE_NAME)
+    private favoritesService: IFavoritesService,
   ) {}
 
   private async checkProductProperties(
@@ -31,10 +41,6 @@ export class ProductController {
     checkId?: boolean,
   ): Promise<boolean> {
     if (checkId) {
-      if (!product.hasOwnProperty('id')) {
-        throw new UnprocessableEntityException('Missing product id');
-      }
-
       if (typeof product['id'] != 'number') {
         throw new UnprocessableEntityException(
           'id type is wrong. Expected number',
@@ -166,8 +172,18 @@ export class ProductController {
 
     if (!userFavorites) return [];
 
-    return await this.productService.getProductsByCategoriesAndIds(
+    const products = await this.productService.getProductsByCategoriesAndIds(
       userFavorites,
+    );
+
+    return products.map(
+      (prod) =>
+        new ProductDto({
+          id: prod.id,
+          categoryId: prod.categoryId,
+          name: prod.name,
+          productDetails: prod.productDetails,
+        }),
     );
   }
 

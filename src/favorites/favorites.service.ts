@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import FavoritesDaRepository from './favorites.da.repository';
+import { Inject, Injectable } from '@nestjs/common';
+import IFavoriteRepository, {
+  FAVORITES_REPOSITORY_INTERFACE_NAME,
+} from './favorites.interface.repository';
+import IFavoritesService from './favorites.interface.service';
 import { FavoriteItemModel, FavoriteModel } from './favorites.model';
 
 @Injectable()
-export class FavoritesService {
-  constructor(private readonly favoritesRepository: FavoritesDaRepository) {}
+export class FavoritesService implements IFavoritesService {
+  constructor(
+    @Inject(FAVORITES_REPOSITORY_INTERFACE_NAME)
+    private favoritesRepository: IFavoriteRepository,
+  ) {}
 
   async addFavorite(
     userId: number,
@@ -18,7 +24,7 @@ export class FavoritesService {
     userId: number,
     categoryId: number,
     productId: number,
-  ): Promise<FavoriteModel | void> {
+  ): Promise<FavoriteModel> {
     return await this.favoritesRepository.delete(userId, categoryId, productId);
   }
 

@@ -1,11 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductModel } from './product.model';
 import { BaseModel } from '../base/base.model';
-import ProductDaRepository from './product.da.repository';
 import { FavoriteItemModel } from '../favorites/favorites.model';
+import IProductService from './product.interface.service';
+import IProductRepository, {
+  PRODUCT_REPOSITORY_INTERFACE_NAME,
+} from './product.interface.repository';
 @Injectable()
-export class ProductService {
-  constructor(private readonly productRepository: ProductDaRepository) {}
+export class ProductService implements IProductService {
+  constructor(
+    @Inject(PRODUCT_REPOSITORY_INTERFACE_NAME)
+    private productRepository: IProductRepository,
+  ) {}
 
   async getProductsByCategories(
     categories: BaseModel[],

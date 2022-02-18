@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { BaseModel } from '../base/base.model';
 import { FavoriteItemModel } from '../favorites/favorites.model';
 import mockInitialProducts from '../mock/mockProducts.json';
+import IProductRepository from './product.interface.repository';
 import { ProductModel } from './product.model';
 
 @Injectable()
-export default class ProductDaRepository {
+export default class ProductDaRepository implements IProductRepository {
   private static products: ProductModel[];
   constructor() {
     ProductDaRepository.products = [...mockInitialProducts];
