@@ -284,7 +284,6 @@ describe('ProductController', () => {
       newSampleProduct['productDetails'] = newProductDetail;
 
       const productAsDto = new ProductDto(newSampleProduct);
-      console.log('productAsDto', JSON.stringify(productAsDto));
 
       await controller.addProduct(productAsDto);
       expect(mockCategory).toHaveBeenCalledTimes(2);
